@@ -2,7 +2,9 @@ const express = require('express')
 
 const bodyParser=require('body-parser')
 const cors=require('cors')
-
+var MongoClient = require('mongodb').MongoClient;
+require('dotenv').config()
+var uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.wwsul.mongodb.net:27017,cluster0-shard-00-01.wwsul.mongodb.net:27017,cluster0-shard-00-02.wwsul.mongodb.net:27017/${process.env.DB_NAME}?ssl=true&replicaSet=atlas-kv6gzo-shard-0&authSource=admin&retryWrites=true&w=majority`;
 const port = 4000
 
 const app = express()
@@ -13,9 +15,9 @@ app.use(bodyParser.json())
 
 
 
-var MongoClient = require('mongodb').MongoClient;
 
-var uri = "mongodb://Mau:hungry@cluster0-shard-00-00.wwsul.mongodb.net:27017,cluster0-shard-00-01.wwsul.mongodb.net:27017,cluster0-shard-00-02.wwsul.mongodb.net:27017/creative?ssl=true&replicaSet=atlas-kv6gzo-shard-0&authSource=admin&retryWrites=true&w=majority";
+
+
 MongoClient.connect(uri, function(err, client) {
   const collection = client.db("creative").collection("service");
   
@@ -67,4 +69,4 @@ app.get('/', (req, res) => {
 
 
 
-app.listen(port)
+app.listen(process.env.PORT || port)
